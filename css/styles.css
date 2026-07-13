@@ -62,8 +62,6 @@ img{
 /* garantir conteúdo acima do background */
 main, footer.site-footer{position:relative;z-index:10}
 
-/* imagens das miniaturas: cobrir área */
-.project-media .thumb{width:100%;height:100%;display:block}
 
 /* Respect user preference for reduced motion */
 @media (prefers-reduced-motion:reduce){
@@ -597,12 +595,9 @@ body.nav-open::before{
 }
 .footer-content{
   display:flex;
-  justify-content:space-between;
+  justify-content:center;
   align-items:center;
   margin-bottom:2rem;
-}
-.footer-content{
-  justify-content:center;
 }
 .footer-center{
   display:flex;
@@ -961,7 +956,7 @@ body.nav-open::before{
   .nav.open{
     opacity:1 !important;
     visibility:visible !important;
-    pointer-events:all !important;
+    pointer-events:auto !important;
   }
   
   .nav a{

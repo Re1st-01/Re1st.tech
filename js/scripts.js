@@ -25,26 +25,38 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!toggle || !nav) return;
     
+    function closeNav() {
+      nav.classList.remove('open');
+      body.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      nav.setAttribute('aria-hidden', 'true');
+    }
+
     toggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      nav.classList.toggle('open');
-      body.classList.toggle('nav-open');
+      const isOpen = nav.classList.toggle('open');
+      body.classList.toggle('nav-open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen.toString());
+      nav.setAttribute('aria-hidden', (!isOpen).toString());
     });
     
     document.addEventListener('click', (e) => {
       if (nav.classList.contains('open') && 
           !nav.contains(e.target) && 
           !toggle.contains(e.target)) {
-        nav.classList.remove('open');
-        body.classList.remove('nav-open');
+        closeNav();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        closeNav();
+        toggle.focus();
       }
     });
     
     nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('open');
-        body.classList.remove('nav-open');
-      });
+      link.addEventListener('click', () => closeNav());
     });
   })();
 
@@ -100,11 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (scrollY < 200) {
       navLinks.forEach(link => link.classList.remove('active'));
-      const aboutLink = document.querySelector('.nav a[href="#about"]');
-      if (aboutLink) aboutLink.classList.add('active');
     }
   }
   
-  window.addEventListener('scroll', highlightNav);
+  window.addEventListener('scroll', highlightNav, {passive: true});
   highlightNav();
 });
